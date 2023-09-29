@@ -1,0 +1,62 @@
+
+
+* Scripture
+Keeps track of both the reference and the text of the scripture. Can hide words and get the rendered display of the text.
+    - Methods
+        
+        HideRandomWords(numberToHide : int) : void
+        GetDisplayText() : string
+        IsCompletelyHidden() : bool
+
+    - Variables
+        int _ramdon_word
+        string  _reference
+        String _scriptures
+        List  _scriptureList
+
+Suggested
+        _reference : Reference
+        _words : List<Word>
+
+
+
+
+* Reference
+Reference: Keeps track of the book, chapter, and verse information.
+
+    -Methods
+
+        GetDisplayText() : string
+    
+    -Variables
+        string reference 
+
+Suggested
+    _book : string
+    _chapter : int
+    _verse : int
+    _endVerse : int
+
+
+
+
+
+
+* Word 
+Word: Keeps track of a single word and whether it is shown or hidden.
+    -Methods
+        Hide() : void
+        Show() : void
+        IsHidden() : bool
+        GetDisplayText() : string
+
+    -Variables
+        string singleWord
+
+   Suggested 
+    _text : string
+    _isHidden : bool
+
+
+
+
