@@ -1,5 +1,8 @@
 using System;
 using System.Threading.Tasks.Dataflow;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel;
 
 class Program
 {
@@ -7,35 +10,48 @@ class Program
     {
         
         while (true)
+        {
+            
+            
+            //tring _mainScripture = "Hola como te va, todo bien?";
+            string _mainScripture = "For, behold, I have refined thee, I have chosen thee in the furnace of affliction.";
+            
+            Reference myReference = new Reference("1 Nephi", 20, 10 );
+
+            Scripture myScripture = new Scripture(myReference, _mainScripture);
+
+
+            while (myScripture.IscompletelyHidden() == false)   
             {
-        
-                Console.WriteLine("Hello Develop03 World!");
-
-                Reference myReference = new Reference("Ether", 12, 4 );
-
-                Scripture myScripture = new Scripture(myReference, "Wherefore, whoso believeth in God might with surety hope for a better world, yea, even a place at the right hand of God, which hope cometh of faith, maketh an anchor to the souls of men, which would make them sure and steadfast, always abounding in good works, being led to glorify God.");
-
-                
                 // This will start by displaying "AAA" and waiting for the user to press the enter key
                 Console.WriteLine(myScripture.GetDisplayText());
 
-                Console.ReadLine();
+                myScripture.HideRandomWords();
+
+                Console.WriteLine(" Press enter to continue or type quite to finish");
+
+                string resp = Console.ReadLine();
+
+                if(resp == "quit")
+                {
+                    break;
+                }
+
 
                 // This will clear the console
                 Console.Clear();
 
                 // This will show "BBB" in the console where "AAA" used to be
-                Console.WriteLine(myScripture.GetDisplayText());
+                //Console.WriteLine(myScripture.GetDisplayText());
 
-                
-
-                if (myScripture.IscompletelyHidden() == true)
-                {
-                        break;
-                   }
-
-    
+            
             }
+
+            Console.WriteLine("Have a good day!");
+            break;  
+
+
+        }
     
     }
 
