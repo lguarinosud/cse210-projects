@@ -38,7 +38,6 @@ public class Activity
         
 
     }
-
     public void SetDuration(int duration)
     {
         _duration = duration;
