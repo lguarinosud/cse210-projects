@@ -1,0 +1,42 @@
+
+
+
+FamilyBudget
+
+Classes
+
+1 - Menu: Menu classs will be in charge to display the menu and options.
+
+2 - Accounts : base
+string _name, int _balance, int _budget, string _description, List Movements movements; 
+constructor
+3 - Incomes : Account
+variables: string _name, int _balance, int _budget, string _description
+constructors
+methods: getters and setters, calculate_balance(), 
+
+4 - Expenses : Account
+string _name, int _balance, int _budget, string _description, string string _payment_method
+
+5 - Users
+string name
+
+6 - reports
+string _month
+
+7 - Files (save, load in a file)
+
+8 - Payment_method
+
+9 - movements
+Object Accounts account, int value, string date, string note
+constructor
+Methods: addMovement(), 
+
+10 - Month_budget 
+   string _month, int total_income, int total_balance, list MonthItems,  
+
+11 - Month_budgetItem
+string _month, string account, int budget 
+
+ 
