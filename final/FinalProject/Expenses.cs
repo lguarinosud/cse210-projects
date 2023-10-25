@@ -15,7 +15,7 @@ public class Expenses : Accounts
 
 public override string getAccountDetails()
     {
-        string details = $"Type: Expenses Name:{_name} Description: {_description}";
+        string details = $"| Type: Expenses | Name:{_name} | Description: {_description} |";
 
         return details;
     }

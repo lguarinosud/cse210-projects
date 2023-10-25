@@ -15,7 +15,7 @@ public Incomes(string name, string description) : base ( name, description)
 
 public override string getAccountDetails()
     {
-        string details = $"Type: Incomes Name:{_name} Description: {_description}";
+        string details = $"| Type: Incomes | Name: {_name} | Description: {_description} |";
 
         return details;
     }

@@ -34,15 +34,14 @@ class Program
                 
                 case "2": // Budget
                         
-                        //ListGoalDetails();
-                        Console.WriteLine("Hit enter to return to the main menu...");
-                        Console.ReadLine();
-                        Console.Clear();
+                        myActivityManager.DisplayBudgetSubMenu();
+                        
 
                     break;
                 
                 case "5": //save all
                     myActivityManager.SaveAccountFile(myActivityManager.getAccountList());
+                    myActivityManager.SaveMonthBudgetFile(myActivityManager.GetMonthBudgetList());
                     Console.WriteLine("");
                     Console.WriteLine("Budget saved!");
                     Console.WriteLine("");
@@ -54,9 +53,13 @@ class Program
 
                 case "6": //Load goals
                     myActivityManager.LoadAccounts();
-                    Console.WriteLine("Budget Loaded, see below: ");
+                    Console.WriteLine("Account Loaded, see below: ");
                     myActivityManager.DisplayAccounts();
                     Console.WriteLine("");
+                    
+                    myActivityManager.LoadMonthBudget();
+                    myActivityManager.DisplayMonthsBudget();
+                    
                     Console.WriteLine("Hit enter to return to the main menu...");
                     Console.ReadLine();
                     Console.Clear();

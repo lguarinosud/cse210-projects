@@ -1,5 +1,10 @@
+using System.Collections;
 using System.Diagnostics;
 using System.Threading.Tasks.Dataflow;
+using System;
+using System.IO;
+using Microsoft.VisualBasic;
+using System.Runtime.CompilerServices;
 
 public class ActivityManager
 {
@@ -33,6 +38,10 @@ public List<Accounts> getAccountList()
     return AccountList;
 }
     
+public List<MonthBudget> GetMonthBudgetList()
+{
+    return MonthBudgetList;
+}
     
     public void DisplayMenu()
     {
@@ -126,6 +135,16 @@ public List<Accounts> getAccountList()
     }
    
 
+
+public void DisplayMonthsBudget()
+{
+    Console.WriteLine($"========= Month ===========");
+    foreach ( MonthBudget month in MonthBudgetList)
+    {
+        Console.Write("dont know");
+        month.displayBudgetMonth();
+    }
+}
  public void DisplayBudgetSubMenu()
     {
         while (true)
@@ -134,7 +153,10 @@ public List<Accounts> getAccountList()
             //Console.WriteLine("Select an option: ");
 
             Console.WriteLine("1.   Create a month Budget ");
-            Console.WriteLine("2.   Create a Month Item ");
+            Console.WriteLine("2.   Edit a Month Item ");
+            Console.WriteLine("3.   Display a Month Item ");
+            Console.WriteLine("4.   Return to main Menu ");
+
 
             Console.Write("");
             Console.WriteLine("");
@@ -150,9 +172,11 @@ public List<Accounts> getAccountList()
                     
                     Console.Write("====Create a Month Budget===");
                     Console.WriteLine("");
-                    createAccount();
-                    Console.WriteLine("Account Created:");
+                    createBudgetMoth();
+                    Console.WriteLine("Budget Month Created:");
+                    Console.WriteLine("");
                     
+
                     Console.WriteLine("Hit enter to return to the main menu...");
                     Console.ReadLine();
                     Console.Clear();
@@ -161,17 +185,82 @@ public List<Accounts> getAccountList()
                     
                     break;
                 
-                case "2": // Update an account
-                        Console.WriteLine("===Update an Account===");
+                case "2": // Edit an  Month budget
+                        Console.WriteLine("===Edit a Month Budget===");
+                        int count = 0;
+
+                        foreach (MonthBudget item in MonthBudgetList)
+                        {
+                            string line = $"{count}.   {item.getBudgetMonthDetail()}";
+                            Console.Write(line);
+
+                        }
+                        Console.WriteLine("");
+                        Console.WriteLine("Select a month: ");
+                        string resp = Console.ReadLine();
+                        int monthPosition = int.Parse(resp) - 1;
+                        MonthBudget monthSelected = MonthBudgetList[monthPosition];
+                        monthSelected.displayBudgetMonth();
+                        Console.WriteLine("");
+                        Console.WriteLine("1.   Month");
+                        Console.WriteLine("2.   Year");
+                        Console.WriteLine("3.   Account budget");
+                        Console.Write("What would you like to edit?");
+                        Console.WriteLine("");
+                        
+                        resp = Console.ReadLine();
+                        
+                        switch (resp)
+                            {
+                                case "1":
+                                    string currentMonth =  monthSelected.getMonth();
+                                    Console.WriteLine($"Current month: {currentMonth}");
+                                    Console.Write("Enter new month: ");
+                                    Console.WriteLine("");
+
+                                    resp = Console.ReadLine();
+                                    monthSelected.setMonth(resp);
+                                    Console.WriteLine($"Month updated from {currentMonth} to {resp}");
+                                    Console.WriteLine("");
+                                break;
+
+                                case "2": 
+                                    string currentYear =  monthSelected.getYear();
+                                    Console.WriteLine($"Current Year: {currentYear}");
+                                    Console.Write("Enter new Year: ");
+                                    Console.WriteLine("");
+
+                                    resp = Console.ReadLine();
+                                    monthSelected.setMonth(resp);
+                                    Console.WriteLine($"Year updated from {currentYear} to {resp}");
+                                    Console.WriteLine("");
+                                    break;
+
+                                case "3":
+                                    Console.WriteLine("");
+                                    monthSelected.displayBudgetItems();
+                                    Console.WriteLine("");
+                                    
+                                    Console.Write($"What budget's account do you want to update?: ");
+                                    resp = Console.ReadLine();
+                                    int position = int.Parse(resp) - 1;
+                                    Console.WriteLine("");
+                                    
+                                    monthSelected.editItemBudget(position);
+                                    
+                                    break;
+                            }
+                                    
+                            
+
                         Console.WriteLine("Hit enter to return to the main menu...");
                         Console.ReadLine();
                         Console.Clear();
 
                     break;
                 
-                case "3": //Delete an account
-                    //SaveGoals();
-                    Console.WriteLine("===Delete an Account===");
+                case "3": // Display accounts
+                    DisplayMonthsBudget();
                     Console.WriteLine("");
                     Console.WriteLine("Hit enter to return to the main menu...");
                     Console.WriteLine("");
@@ -180,26 +269,21 @@ public List<Accounts> getAccountList()
                     break;
                 
                 
-                case "4": // Display accounts
-                    DisplayAccounts();
-                    Console.WriteLine("");
-                    Console.WriteLine("Hit enter to return to the main menu...");
-                    Console.WriteLine("");
-                    Console.ReadLine();
-                    Console.Clear();
-                    break;
-                
-                case "5": //quit
-                    Console.WriteLine("Hit enter to return to the main manu");
-                    Console.WriteLine("");
-                    Console.ReadLine();
+                case "4": //quit
+                    //Console.WriteLine("Hit enter to return to the main manu");
+                    //Console.WriteLine("");
+                    //Console.ReadLine();
                     Console.Clear();
                 
                     return;
-            }
 
-        }
+                
+                
+                
+            }
   
+        }
+    
     }
 
    public void createAccount()
@@ -273,6 +357,102 @@ public List<Accounts> getAccountList()
             }
         }
     }
+
+  public void SaveMonthBudgetFile(List<MonthBudget> monthBudgetList)
+  {
+    
+            // You can add text to the file with the WriteLine method
+            //outputFile.WriteLine("date, prompt, entry");
+            
+            // You can use the $ and include variables just like with Console.WriteLine
+            //outputFile.WriteLine(_score);
+            foreach (MonthBudget each in monthBudgetList)
+            {
+                
+                using (StreamWriter outputFile = new StreamWriter($"{each.getMonth()}_{each.getYear()}.csv"))
+                {
+                    
+                    string firstLine = each.parseBudgetMonthDetails();
+
+                    outputFile.WriteLine(firstLine);
+                    List<BudgetItems> budgetItemsList = new List<BudgetItems>();
+                    budgetItemsList = each.getBudgetItemList();
+                    foreach (BudgetItems item in budgetItemsList)
+                    {
+                        string line = item.parseBudgetItemDetails();
+                        outputFile.WriteLine(line);
+                    }
+                }
+        }    
+            
+        
+  }
+
+public void LoadMonthBudget()
+{
+    string[] monthFilesPathList = monthFiles();
+    
+    foreach (string file in monthFilesPathList)
+    {
+        string[] lines = System.IO.File.ReadAllLines(file);
+
+        string year = null;
+        string month = null;
+        string totalIncomes = null;
+        string totalBalance = null;
+        string totalExpenses = null;   
+        MonthBudget myMonthBudget = null;
+        for (int i = 0; i < lines.Length; i++) //for each line in the file:
+        {
+             
+            string[] parts = lines[i].Split(",");
+            
+            
+            
+            if (i == 0) //takes month budget details from the first line
+            {
+                     
+                year = parts[0];
+                month = parts[1];
+                totalIncomes = parts[2];
+                totalBalance = parts[3];
+                totalExpenses = parts[4];
+                myMonthBudget = new MonthBudget(month, year, double.Parse(totalIncomes), double.Parse(totalBalance), double.Parse(totalExpenses));
+                     
+            }
+            
+            else
+                   
+            {
+                 //create the month budget
+                string accountName = parts[0];
+                double accountBudget = double.Parse(parts[1]);
+                string paymentMethod = parts[2];
+                double accountBalance = double.Parse(parts[3]);
+                
+                //Console.WriteLine($"imprimi algo por ffavor  {accountName}, {accountBudget}, {paymentMethod}, {accountBalance}");
+
+                BudgetItems mybudgetItems = new BudgetItems(year, month, accountName, accountBudget, paymentMethod, accountBalance); //creating the month item object. 
+                
+                myMonthBudget.addItemToBudget(mybudgetItems);
+                
+
+
+                   
+            }
+                
+        }
+    
+        Console.WriteLine("=============Budget Month=============");
+        myMonthBudget.displayBudgetMonth();
+        
+        Console.WriteLine("");
+        Console.WriteLine($"Month Loaded!");
+        Console.WriteLine("");
+    
+    }
+        
+}
     
     public void LoadAccounts()
     {
@@ -314,7 +494,7 @@ public List<Accounts> getAccountList()
                 // Check if this is the first line
                 
             }
-    }
+        }
     }
 
 public void createBudgetMoth()
@@ -322,11 +502,98 @@ public void createBudgetMoth()
     Console.Write("Year?: ");
     string year = Console.ReadLine();
 
-    Console.Write("Month?");
+    Console.Write("Month? ");
     string month = Console.ReadLine();
 
-    MonthBudget myMonthBudget = new MonthBudget(year, month);
-    MonthBudgetList.Add(myMonthBudget);
+    MonthBudget myMonthBudget = new MonthBudget(year, month); // Creates a month budget
+    MonthBudgetList.Add(myMonthBudget); //Add the month budget to the list of month
+    
+    
+    while (true)
+    {
+        Console.Clear();
+        Console.WriteLine("=========Budget Month=============");
+        Console.WriteLine(""); 
+        myMonthBudget.displayBudgetMonth(); // Display the budget with accounts
+        Console.WriteLine("");
+        Console.WriteLine("=========Add accounts to the month=============");
+        Console.WriteLine("");
+        BudgetItems myItemBudget = createItemBudget(year, month); //Creates an item of the budget
+        myMonthBudget.addItemToBudget(myItemBudget);  //Add the item (account) to the list of accounts for that month)
+        
+        Console.WriteLine(""); 
+        Console.Write("Do you want to add another account? yes/no ");
+        string resp = Console.ReadLine();
+
+        if (resp == "no")
+        {
+            break;
+        }
+    }
+}   
+
+
+
+public BudgetItems createItemBudget(string year, string month)
+{
+    
+    Console.WriteLine("");
+
+    int count = 0;
+    foreach (Accounts item in AccountList)
+    {
+        count++;
+        string line = item.getAccountDetails();
+
+        string selectAccount =  $"{count}.  {line}";
+        Console.WriteLine(selectAccount);
+    }
+
+    Console.Write("Choose an account by typing the account number: ");
+    string respName =  Console.ReadLine();
+
+    int respNameToList =  int.Parse(respName) - 1;
+    
+    string name = AccountList[respNameToList].GetName();
+    
+    Console.WriteLine("");
+    Console.Write($"Assing a budget to account \"{name}\" for the month: ");
+    string respBudget = Console.ReadLine();
+    double budget = double.Parse(respBudget);
+    
+    Console.WriteLine("");
+    Console.Write("Assing a payment method (Cash/bank account):  ");
+    string respPaymenthMethod = Console.ReadLine();
+
+    BudgetItems myBudgetItem = new BudgetItems(year, month, name, budget, respPaymenthMethod, 0);
+    Console.WriteLine("");
+    Console.WriteLine("Account added to budget");
+    return myBudgetItem;
+
+
+    
+}
+
+public string[] monthFiles()
+{
+    string directoryPath = "month_budget/";
+    //Console.WriteLine(Directory.GetCurrentDirectory());
+        // Check if the directory exists.
+        if (Directory.Exists(directoryPath))
+        {
+            // Get a list of file paths in the directory.
+            string[] filePaths = Directory.GetFiles(directoryPath);
+
+            return filePaths;
+            
+        }
+        
+        else
+        {
+            Console.WriteLine($"Directory '{directoryPath}'does not exist.");
+            return new string[0];
+            
+        }
 }
 
 }

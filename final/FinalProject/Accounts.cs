@@ -53,7 +53,7 @@ public class Accounts
 
     public virtual string getAccountDetails()
     {
-        string details = $"Name:{_name} Description: {_description}";
+        string details = $"Name: {_name} Description: {_description}";
 
         return details;
     }
