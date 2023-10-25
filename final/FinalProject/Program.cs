@@ -39,7 +39,7 @@ class Program
 
                     break;
                 
-                case "5": //save all
+                case "3": //save all
                     myActivityManager.SaveAccountFile(myActivityManager.getAccountList());
                     myActivityManager.SaveMonthBudgetFile(myActivityManager.GetMonthBudgetList());
                     Console.WriteLine("");
@@ -51,7 +51,7 @@ class Program
                     Console.Clear();
                     break;
 
-                case "6": //Load goals
+                case "4": //Load goals
                     myActivityManager.LoadAccounts();
                     Console.WriteLine("Account Loaded, see below: ");
                     myActivityManager.DisplayAccounts();
@@ -67,7 +67,7 @@ class Program
                     break;
 
                 
-                case "7": //quit
+                case "5": //quit
                     Console.WriteLine("I see you later!");
                     return;
             }
