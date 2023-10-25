@@ -19,11 +19,9 @@ public class ActivityManager
     {
         _menuOptions.Add("   1. Accounts");
         _menuOptions.Add("   2. Budget");
-        _menuOptions.Add("   3. Movements");
-        _menuOptions.Add("   4. Reports");
-        _menuOptions.Add("   5. Save All");
-        _menuOptions.Add("   6. Load All");
-        _menuOptions.Add("   7. Quit");
+        _menuOptions.Add("   3. Save All");
+        _menuOptions.Add("   4. Load All");
+        _menuOptions.Add("   5. Quit");
 
         _subMenuOptions.Add("  1. Create an Account");
         _subMenuOptions.Add("  2. Update an account");
@@ -259,7 +257,7 @@ public void DisplayMonthsBudget()
 
                     break;
                 
-                case "3": // Display accounts
+                case "3": // Display month
                     DisplayMonthsBudget();
                     Console.WriteLine("");
                     Console.WriteLine("Hit enter to return to the main menu...");
